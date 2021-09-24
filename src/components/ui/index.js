@@ -1,6 +1,6 @@
 // Imports
 import React from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {ActivityIndicator, Modal} from 'react-native';
 
@@ -16,6 +16,8 @@ export const Body = styled.View`
   align-items: ${props =>
     props.justifyToCenter || props.alignToCenter ? 'center' : 'flex-start'};
 `;
+
+export const ScrollBody = styled.ScrollView``;
 
 export const TextHeader = styled.Text`
   font-size: 36px;
@@ -62,6 +64,15 @@ export const LoaderArea = styled.View`
   align-items: center;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.4);
+`;
+
+export const ContainerCalendar = styled.View`
+  margin-top: 15px;
+  margin-bottom: 15px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  background-color: white;
+  border-radius: 7px;
 `;
 
 export const Loader = ({isPage, loading}) => (

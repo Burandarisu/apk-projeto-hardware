@@ -14,7 +14,6 @@ export default function DashboardScreen() {
 
   useFocusEffect(
     React.useCallback(() => {
-      console.log('setei');
       setLoading(true);
       getMeasure()
         .then(res => {
