@@ -20,6 +20,7 @@ export default class Calendar extends Component {
     this.setState({
       selectedStartDate: date,
     });
+    this.props.onDate?.(date);
   }
   render() {
     const {selectedStartDate} = this.state;
@@ -53,7 +54,6 @@ export default class Calendar extends Component {
             scrollable
           />
         </ContainerCalendar>
-        <Text>SELECTED DATE:{startDate}</Text>
       </Body>
     );
   }

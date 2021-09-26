@@ -1,49 +1,70 @@
 // Imports
 import React, {useEffect, useState} from 'react';
-import {useFocusEffect} from '@react-navigation/native';
-import {Text, StyleSheet, Appearance} from 'react-native';
-import {getMeasure} from '../../services/api/measure';
+// import {useFocusEffect} from '@react-navigation/native';
+import {Alert, Appearance} from 'react-native';
+import {formatISO} from 'date-fns';
 
 // Styles
-import {
-  Body,
-  ScrollBody,
-  ComponentHolder,
-  Loader,
-  PageName,
-} from '../../components/ui';
+import {Body, Loader, PageName} from '../../components/ui';
 
 // Components
 import Chart from '../../components/Chart';
 import Calendar from '../../components/Calendar';
+import {getMeasure} from '../../services/api/measure';
 
-export default function TemperatureScreen() {
+export default function HumidityScreen() {
   const [data, setData] = useState({data: [], labels: []});
   const [loading, setLoading] = useState(false);
   const [theme, setTheme] = useState();
 
-  useFocusEffect(
-    React.useCallback(() => {
+  const search = async date => {
+    try {
+      date = new Date(date);
+
+      let created_at_begin = new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate(),
+        0,
+        0,
+        0,
+        0,
+      );
+      let created_at_end = new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate(),
+        23,
+        59,
+        59,
+        0,
+      );
       setLoading(true);
-      getMeasure(false)
-        .then(res => {
-          const data = res.data.reduce(
-            (acc, item, id) => {
-              acc.data.push(item.humidity);
-              const created_at = new Date(item.created_at);
-              acc.labels.push(
-                `${created_at.getHours()}:${created_at.getMinutes()}`,
-              );
-              return acc;
-            },
-            {data: [], labels: []},
+
+      const res = await getMeasure({
+        created_at_begin: formatISO(created_at_begin),
+        created_at_end: formatISO(created_at_end),
+        per_page: 99999,
+      });
+
+      const data = res.data.reverse().reduce(
+        (acc, item) => {
+          acc.data.push(item.humidity);
+          const created_at = new Date(item.created_at);
+          acc.labels.push(
+            `${created_at.getHours()}:${created_at.getMinutes()}`,
           );
-          setData(data);
-        })
-        .catch(err => Alert.alert('Erro:', err.message || 'Ocorreu um erro!'))
-        .finally(() => setLoading(false));
-    }, []),
-  );
+          return acc;
+        },
+        {data: [], labels: []},
+      );
+      setData(data);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      Alert.alert('Erro: ', error.message);
+    }
+  };
 
   useEffect(() => {
     setTheme(Appearance.getColorScheme());
@@ -56,15 +77,18 @@ export default function TemperatureScreen() {
     setTheme(colorScheme);
   };
 
-  console.log(theme);
-
   return (
     <Body alignToCenter>
       <Loader loading={loading} />
-      <PageName name="Umidade" />
-      <Calendar />
-      <Chart data={data} color={theme} />
-      {/* <ScrollBody horizontal style={{height: '0%'}}></ScrollBody> */}
+      <PageName name="Temperatura" />
+      <Calendar onDate={search} />
+      <Chart
+        yFormat={value => {
+          return `${value}%`;
+        }}
+        data={data}
+        color={theme}
+      />
     </Body>
   );
 }

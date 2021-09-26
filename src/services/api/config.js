@@ -1,8 +1,17 @@
-import axios from 'axios';
+import api from './configuration';
 
-const api = axios.create({
-  baseURL: 'http://192.168.1.25:8080',
-  timeout: 5000,
-});
+export function getConfig() {
+  return api
+    .get('config', {
+      params: {
+        last: true,
+      },
+    })
+    .then(res => res.data);
+}
 
-export default api;
+export function saveConfig(automatic, temperature, state) {
+  return api
+    .post('config', {automatic, temperature, state})
+    .then(res => res.data);
+}

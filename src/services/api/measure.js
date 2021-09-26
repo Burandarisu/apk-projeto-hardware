@@ -1,10 +1,10 @@
-import api from './config';
+import api from './configuration';
 
-export function getMeasure(last = true) {
+export function getMeasure(query) {
   return api
     .get('measure', {
       params: {
-        last: last === true ? true : undefined,
+        ...query,
       },
     })
     .then(res => res.data);

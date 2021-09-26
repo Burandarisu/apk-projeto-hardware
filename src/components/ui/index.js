@@ -2,7 +2,7 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import {ActivityIndicator, Modal} from 'react-native';
+import {ActivityIndicator, Modal, Switch, TextInput, View} from 'react-native';
 
 const primaryColor = '#005003';
 const secondaryColor = '#183153';
@@ -17,7 +17,9 @@ export const Body = styled.View`
     props.justifyToCenter || props.alignToCenter ? 'center' : 'flex-start'};
 `;
 
-export const ScrollBody = styled.ScrollView``;
+export const ScrollBody = styled.ScrollView`
+  width: 100%;
+`;
 
 export const TextHeader = styled.Text`
   font-size: 36px;
@@ -33,15 +35,10 @@ export const HeaderCard = styled.Text`
   text-align: left;
 `;
 
-export const PageName = ({name}) => (
-  <Card style={{marginVertical: 15}}>
-    <TextHeader>{name}</TextHeader>
-  </Card>
-);
-
 export const Card = styled.View`
   width: 70%;
   padding: 10px;
+  margin-top: 50px;
   border-radius: 10px;
   background-color: white;
 `;
@@ -50,7 +47,7 @@ export const Row = styled.View`
   flex-direction: row;
   align-items: center;
   margin-top: 25px;
-  justify-content: space-around;
+  justify-content: ${props => (props.center ? 'center' : 'space-around')};
 `;
 
 export const ValueText = styled.Text`
@@ -84,11 +81,45 @@ export const Loader = ({isPage, loading}) => (
 );
 
 export const InformationCard = ({title, value, iconName}) => (
-  <Card style={{marginTop: 50}}>
+  <Card>
     <HeaderCard>{title}</HeaderCard>
     <Row>
       <FontAwesome5 name={iconName} size={iconSize} color={secondaryColor} />
       <ValueText>{value}</ValueText>
+    </Row>
+  </Card>
+);
+
+export const TextInputCard = ({title, value, onChange}) => (
+  <Card>
+    <HeaderCard>{title}</HeaderCard>
+    <Row center>
+      <TextInput
+        value={value}
+        onChangeText={onChange}
+        keyboardType="number-pad"
+        style={{fontSize: 40, fontWeight: 'bold', color: secondaryColor}}
+      />
+      <HeaderCard>ºC</HeaderCard>
+    </Row>
+  </Card>
+);
+
+export const PageName = ({name}) => (
+  <Card>
+    <TextHeader>{name}</TextHeader>
+  </Card>
+);
+
+export const MySwitch = ({title, value, onChange}) => (
+  <Card>
+    <HeaderCard>{title}</HeaderCard>
+    <Row>
+      <Switch
+        value={value}
+        onChange={onChange}
+        style={{transform: [{scale: 1.5}], height: 70}}
+      />
     </Row>
   </Card>
 );
