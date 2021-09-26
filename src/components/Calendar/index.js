@@ -43,7 +43,7 @@ export default class Calendar extends Component {
               'Novembro',
               'Dezembro',
             ]}
-            weekdays={['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab', 'Dom']}
+            weekdays={['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']}
             previousTitle="Anterior"
             nextTitle="Próximo"
             onDateChange={this.onDateChange}
