@@ -80,7 +80,7 @@ export default function HumidityScreen() {
   return (
     <Body alignToCenter>
       <Loader loading={loading} />
-      <PageName name="Temperatura" />
+      <PageName name="Umidade" />
       <Calendar onDate={search} />
       <Chart
         yFormat={value => {
